@@ -24,6 +24,15 @@ DEFAULT_OUTPUT_DIR = "/output"
 OUTPUT_FILENAME = "entry.txt"
 
 
+def check_length(length):
+    """Raise ValueError unless length sits inside [MIN_CHARS, MAX_CHARS]."""
+    if length < MIN_CHARS or length > MAX_CHARS:
+        raise ValueError(
+            "entry must be between %d and %d characters; got %d"
+            % (MIN_CHARS, MAX_CHARS, length)
+        )
+
+
 def validate_line(line):
     """Return the line stripped, or raise ValueError if it breaks the gate.
 
@@ -35,12 +44,7 @@ def validate_line(line):
         raise ValueError("entry is empty or only white space")
     if "\n" in cleaned or "\r" in cleaned:
         raise ValueError("entry must be a single line")
-    length = len(cleaned)
-    if length < MIN_CHARS or length > MAX_CHARS:
-        raise ValueError(
-            "entry must be between %d and %d characters; got %d"
-            % (MIN_CHARS, MAX_CHARS, length)
-        )
+    check_length(len(cleaned))
     return cleaned
 
 
